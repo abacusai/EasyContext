@@ -150,8 +150,8 @@ def main(args):
     model = LlamaForCausalLM.from_pretrained(
         args.model,
         torch_dtype=torch.bfloat16,
-        _attn_implementation="flash_attention_2",
-        device_map=accelerator.device,
+        attn_implementation="flash_attention_2",
+        #device_map=accelerator.device,
         **kwargs,
     )
     model = accelerator.prepare(model)
