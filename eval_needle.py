@@ -30,7 +30,7 @@ np.random.seed(SEED)
 
 NEEDLE_FORMAT = "\nThe special magic Singapore number is: {}.\n"
 PREFIX = "This is a very long story book: <book>"
-QUESTION_STR = "</book>.\n Based on the content of the book, Question: What is the special magic Singapore number? Answer: The special magic Singapore number is:"
+QUESTION_STR = "</book>.\n Based on the content of the book, Question: What is the special magic Singapore number? Answer: The special magic Singapore number is: "
 
 
 def eval_forward(accelerator, model, input_ids, pad_id, answer_ids):
@@ -150,7 +150,7 @@ def main(args):
     model = LlamaForCausalLM.from_pretrained(
         args.model,
         torch_dtype=torch.bfloat16,
-        attn_implementation="flash_attention_2",
+        _attn_implementation="flash_attention_2",
         #device_map=accelerator.device,
         **kwargs,
     )
@@ -181,9 +181,9 @@ def main(args):
                 question_str = QUESTION_STR
                 asnwer_str = str(random_number)
 
-                tokenized_needle = tokenizer.encode(needle_str)[1:]
-                tokenized_postfix = tokenizer.encode(question_str)[1:]
-                tokenizer_answer = tokenizer.encode(asnwer_str)[1:]
+                tokenized_needle = tokenizer.encode(needle_str)[0:]
+                tokenized_postfix = tokenizer.encode(question_str)[0:]
+                tokenizer_answer = tokenizer.encode(asnwer_str)[0:]
 
                 prompt = construct_prompt(
                     tokenized_haystack,
